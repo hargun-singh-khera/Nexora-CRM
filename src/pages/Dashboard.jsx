@@ -1,30 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useFetch from '../useFetch'
+import { Link } from 'react-router-dom'
 
 const Dashboard = () => {
   const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
   const newLeads = data?.leads?.filter(lead => lead.status === "New")
   const contactedLeads = data?.leads?.filter(lead => lead.status === "Contacted")
   const qualifiedLeads = data?.leads?.filter(lead => lead.status === "Qualified")
+  const [status, setStatus] = useState("")
   console.log("data", data)
+  const filteredLeads = status === "" ? data?.leads : data?.leads?.filter(lead => lead.status === status)
+  console.log("filteredLeads", filteredLeads)
   return (
     <div className="container pt-3">
       <div className="row">
         <h2 className="text-center mb-4">Anvaya CRM Dashboard</h2>
         <div className="col-md-2">
           <div className="list-group">
-            <a href="#" className="list-group-item" aria-current="true">Dashboard</a>
-            <a href="#" className="list-group-item">Leads</a>
-            <a href="#" className="list-group-item">Sales</a>
-            <a href="#" className="list-group-item">Agents</a>
-            <a href="#" className="list-group-item">Reports</a>
-            <a href="#" className="list-group-item">Settings</a>
+            <Link to={"/"} className="list-group-item" aria-current="true">Dashboard</Link>
+            <Link to={"/lead/list"} className="list-group-item">Leads</Link>
+            <Link to={"/"} className="list-group-item">Sales</Link>
+            <Link to={"/sales-agent"} className="list-group-item">Agents</Link>
+            <Link to={"/"} className="list-group-item">Reports</Link>
+            <Link to={"/"} className="list-group-item">Settings</Link>
           </div>
         </div>
         <div className="col-md-8 py-5 py-md-0 d-flex flex-column">
           <div className="row">
             {loading && <p>Loading...</p>}
-            {data?.leads?.map(lead => (
+            {filteredLeads?.map(lead => (
               <div key={lead._id} className="col-md-6 mb-3">
                 <div className="card border-0 shadow-sm p-2 rounded-4">
                   <div className="card-body">
@@ -46,7 +50,7 @@ const Dashboard = () => {
           <hr />
           <div>
             {loading && <p>Loading...</p>}
-            {data?.leads.length > 0 && <div className="row">
+            {filteredLeads?.length > 0 && <div className="row">
               <div className="col">
                 <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
                   <div className="card-body">
@@ -88,11 +92,11 @@ const Dashboard = () => {
           <hr />
           <div className="d-flex mb-3 gap-2">
             <h4>Quick Filters: </h4>
-            <button className="btn btn-secondary">New</button>
-            <button className="btn btn-secondary">Contact</button>
+            <button onClick={() => setStatus("New")} className="btn btn-secondary">New</button>
+            <button onClick={() => setStatus("Contacted")} className="btn btn-secondary">Contact</button>
           </div>
           <div>
-            <button className="btn btn-primary">Add New Lead</button>
+            <Link to={"/lead/add"} className="btn btn-primary">Add New Lead</Link>
           </div>
         </div>
       </div>

@@ -24,10 +24,10 @@ const AddLead = () => {
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Sales Agent</label>
-              <select className="form-select" aria-label="Default select example">
-                <option value="1" selected>Website</option>
-                <option value="2">Referral</option>
-                <option value="3">Cold Call</option>
+              <select class="form-select" multiple aria-label="Multiple select example">
+                <option value="1" selected>One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
               </select>
             </div>
             <div className="mb-3">
@@ -50,7 +50,7 @@ const AddLead = () => {
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Time to Close</label>
-              <input type="text" className="form-control" id="name" placeholder="Number of days" />
+              <input type="text" className="form-control" id="name" placeholder="Enter number of days" />
             </div>
             <div className="mb-4">
               <label htmlFor="name" className="form-label">Tags</label>
@@ -62,8 +62,8 @@ const AddLead = () => {
             </div>
             <button type="button" className="btn btn-primary">Add Lead</button>
           </div>
-         </div>
-       </div>
+        </div>
+      </div>
     </div>
   )
 }
