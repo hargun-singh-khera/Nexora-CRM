@@ -49,8 +49,7 @@ const Dashboard = () => {
           </div>
           <hr />
           <div>
-            {loading && <p>Loading...</p>}
-            {filteredLeads?.length > 0 && <div className="row">
+            <div className="row">
               <div className="col">
                 <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
                   <div className="card-body">
@@ -58,7 +57,7 @@ const Dashboard = () => {
                       <h6>New Leads</h6>
                     </div>
                     <div className="card-text">
-                      <h1>{newLeads?.length}</h1>
+                      <h1>{newLeads?.length || 0}</h1>
                     </div>
                   </div>
                 </div>
@@ -70,7 +69,7 @@ const Dashboard = () => {
                       <h6>Contacted Leads</h6>
                     </div>
                     <div className="card-text">
-                      <h1>{contactedLeads?.length}</h1>
+                      <h1>{contactedLeads?.length || 0}</h1>
                     </div>
                   </div>
                 </div>
@@ -82,18 +81,18 @@ const Dashboard = () => {
                       <h6>Qualified Leads</h6>
                     </div>
                     <div className="card-text">
-                      <h1>{qualifiedLeads?.length}</h1>
+                      <h1>{qualifiedLeads?.length || 0}</h1>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
           </div>
           <hr />
-          <div className="d-flex mb-3 gap-2">
-            <h4>Quick Filters: </h4>
-            <button onClick={() => setStatus("New")} className="btn btn-secondary">New</button>
-            <button onClick={() => setStatus("Contacted")} className="btn btn-secondary">Contact</button>
+          <div className="mb-3">
+            <span>Quick Filters: </span>
+            <span onClick={() => setStatus("New")} class="badge text-bg-secondary me-2">New</span>
+            <span onClick={() => setStatus("Contacted")} class="badge text-bg-secondary">Contacted</span>
           </div>
           <div>
             <Link to={"/lead/add"} className="btn btn-primary">Add New Lead</Link>

@@ -31,6 +31,10 @@ const router = createBrowserRouter([
     element: <LeadList />
   },
   {
+    path: "/lead/management",
+    element: <LeadManagement />
+  },
+  {
     path: "/lead/add",
     element: <AddLead />
   },

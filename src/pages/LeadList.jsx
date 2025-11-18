@@ -19,7 +19,7 @@ const LeadList = () => {
                                 <th scope="col">S.No.</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Agent Assigned</th>
+                                <th scope="col">Assigned Agent</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,15 +34,15 @@ const LeadList = () => {
                         </tbody>
                     </table>}
                     <hr />
-                    <div className="d-flex mb-3 gap-2">
-                        <h4>Filters: </h4>
-                        <button className="btn btn-secondary">Status</button>
-                        <button className="btn btn-secondary">Sales Agent</button>
+                    <div className="mb-3">
+                        <span>Filters: </span>
+                        <span class="badge text-bg-secondary me-2">Status</span>
+                        <span class="badge text-bg-secondary">Sales Agent</span>
                     </div>
-                    <div className="d-flex mb-3 gap-2">
-                        <h4>Sort by: </h4>
-                        <button className="btn btn-secondary">Priority</button>
-                        <button className="btn btn-secondary">Time to Close</button>
+                    <div className="mb-3">
+                        <span>Sort by: </span>
+                        <span class="badge text-bg-secondary me-2">Priority</span>
+                        <span class="badge text-bg-secondary">Time to Close</span>
                     </div>
                     <Link to={"/lead/add"} className="btn btn-primary">Add New Lead</Link>
                 </div>

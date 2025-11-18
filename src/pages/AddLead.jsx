@@ -1,6 +1,50 @@
 import React from 'react'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
+import useFetch from '../useFetch'
+
+const animatedComponents = makeAnimated()
 
 const AddLead = () => {
+  const { data: agentData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
+  // console.log("data", agentData)
+  const { data: tagsData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/tags")
+  const salesAgent = agentData?.salesAgent
+  // console.log("salesAgent", salesAgent)
+  // console.log("tagsData", tagsData)
+
+  const leadSourceOptions = [
+    { value: 'Website', label: 'Website' },
+    { value: 'Referral', label: 'Referral' },
+    { value: 'Cold Call', label: 'Cold Call' },
+    { value: 'Advertisement', label: 'Advertisement' },
+    { value: 'Email', label: 'Email' },
+    { value: 'Other', label: 'Other' },
+  ]
+
+  const leadStatusOptions = [
+    { value: 'New', label: 'New' },
+    { value: 'Contacted', label: 'Contacted' },
+    { value: 'Qualified', label: 'Qualified' },
+    { value: 'Proposal sent', label: 'Proposal sent' },
+    { value: 'Closed', label: 'Closed' },
+  ]
+
+  const priorityOptions = [
+    { value: 'Low', label: 'Low' },
+    { value: 'Medium', label: 'Medium' },
+    { value: 'High', label: 'High' },
+  ]
+
+
+  const tags = tagsData?.tags
+
+  const salesAgentOptions = salesAgent?.map((agent) => ({ value: agent._id, label: agent.name }))
+  // console.log("salesAgentOptions", salesAgentOptions)
+
+  const tagOptions = tags?.map((tag) => ({ value: tag._id, label: tag.name }))
+  // console.log("tagOptions", tagOptions)
+
   return (
     <div className="container py-4">
       <div className="row">
@@ -13,40 +57,26 @@ const AddLead = () => {
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Lead Source</label>
-              <select className="form-select" aria-label="Default select example">
-                <option value="1" selected>Website</option>
-                <option value="2">Referral</option>
-                <option value="3">Cold Call</option>
-                <option value="2">Advertisement</option>
-                <option value="2">Email</option>
-                <option value="2">Other</option>
-              </select>
+              <Select options={leadSourceOptions} />
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Sales Agent</label>
-              <select class="form-select" multiple aria-label="Multiple select example">
-                <option value="1" selected>One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
+              <Select
+                isMulti
+                name="salesAgent"
+                components={animatedComponents}
+                options={salesAgentOptions}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Lead Status</label>
-              <select className="form-select" aria-label="Default select example">
-                <option value="1" selected>New</option>
-                <option value="2">Contacted</option>
-                <option value="2">Qualified</option>
-                <option value="2">Proposal sent</option>
-                <option value="3">Closed</option>
-              </select>
+              <Select options={leadStatusOptions} />
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Priority</label>
-              <select className="form-select" aria-label="Default select example">
-                <option value="1" selected>High</option>
-                <option value="2">Medium</option>
-                <option value="3">Low</option>
-              </select>
+              <Select options={priorityOptions} />
             </div>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Time to Close</label>
@@ -54,11 +84,14 @@ const AddLead = () => {
             </div>
             <div className="mb-4">
               <label htmlFor="name" className="form-label">Tags</label>
-              <select className="form-select" multiple aria-label="Multiple select example">
-                <option value="1" selected>High Value</option>
-                <option value="2">Follow up</option>
-                <option value="3">Three</option>
-              </select>
+              <Select
+                isMulti
+                name="tags"
+                components={animatedComponents}
+                options={tagOptions}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
             </div>
             <button type="button" className="btn btn-primary">Add Lead</button>
           </div>
