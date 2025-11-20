@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 import useFetch from '../useFetch'
@@ -7,11 +7,9 @@ const animatedComponents = makeAnimated()
 
 const AddLead = () => {
   const { data: agentData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
-  // console.log("data", agentData)
   const { data: tagsData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/tags")
+
   const salesAgent = agentData?.salesAgent
-  // console.log("salesAgent", salesAgent)
-  // console.log("tagsData", tagsData)
 
   const leadSourceOptions = [
     { value: 'Website', label: 'Website' },
@@ -36,31 +34,55 @@ const AddLead = () => {
     { value: 'High', label: 'High' },
   ]
 
-
   const tags = tagsData?.tags
-
   const salesAgentOptions = salesAgent?.map((agent) => ({ value: agent._id, label: agent.name }))
-  // console.log("salesAgentOptions", salesAgentOptions)
-
   const tagOptions = tags?.map((tag) => ({ value: tag._id, label: tag.name }))
-  // console.log("tagOptions", tagOptions)
+
+  const [formData, setFormData] = useState({
+    name: "",
+    source: "",
+    salesAgent: [],
+    status: "",
+    tags: [],
+    timeToClose: null,
+    priority: "",
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSelectChange = (selectedOption, actionMeta) => {
+    console.log("selectedOption", selectedOption, "actionMeta", actionMeta)
+    const { value } = selectedOption
+    const { name }= actionMeta
+    // console.log("name", name, "value", value)
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
+  console.log(formData)
 
   return (
     <div className="container py-4">
       <div className="row">
         <div className="col-md-5 mx-auto">
           <h2 className="mb-4 text-center">Add New Lead</h2>
-          <div className="card px-4 py-5 shadow-sm rounded-sm">
+          <form onSubmit={handleSubmit} className="card px-4 py-5 shadow-sm rounded-sm">
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Lead Name</label>
-              <input type="text" className="form-control" id="name" placeholder="Name of customer or company" />
+              <input type="text" value={formData.name} onChange={handleChange} className="form-control" id="name" name="name" placeholder="Name of customer or company" />
             </div>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Lead Source</label>
-              <Select options={leadSourceOptions} />
+              <label htmlFor="leadSource" className="form-label">Lead Source</label>
+              <Select id="leadSource" name="leadSource" options={leadSourceOptions} onChange={handleSelectChange} />
             </div>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Sales Agent</label>
+              <label htmlFor="salesAgent" className="form-label">Sales Agent</label>
               <Select
                 isMulti
                 name="salesAgent"
@@ -71,16 +93,16 @@ const AddLead = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Lead Status</label>
-              <Select options={leadStatusOptions} />
+              <label htmlFor="leadStatus" className="form-label">Lead Status</label>
+              <Select id="leadStatus" name="leadStatus" options={leadStatusOptions} onChange={handleSelectChange} />
             </div>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Priority</label>
-              <Select options={priorityOptions} />
+              <label htmlFor="priority" className="form-label">Priority</label>
+              <Select id="priority" name="priority" options={priorityOptions} onChange={handleSelectChange} />
             </div>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Time to Close</label>
-              <input type="text" className="form-control" id="name" placeholder="Enter number of days" />
+              <label htmlFor="timeToClose" className="form-label">Time to Close</label>
+              <input type="number" min={1} max={30} value={formData.timeToClose} onChange={handleChange} className="form-control" id="timeToClose" placeholder="Enter number of days" />
             </div>
             <div className="mb-4">
               <label htmlFor="name" className="form-label">Tags</label>
@@ -88,13 +110,14 @@ const AddLead = () => {
                 isMulti
                 name="tags"
                 components={animatedComponents}
+                onChange={handleSelectChange}
                 options={tagOptions}
                 className="basic-multi-select"
                 classNamePrefix="select"
               />
             </div>
-            <button type="button" className="btn btn-primary">Add Lead</button>
-          </div>
+            <button className="btn btn-primary">Add Lead</button>
+          </form>
         </div>
       </div>
     </div>

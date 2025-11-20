@@ -19,7 +19,7 @@ const LeadList = () => {
                                 <th scope="col">S.No.</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Assigned Agent</th>
+                                <th scope="col">Sales Agent</th>
                             </tr>
                         </thead>
                         <tbody>

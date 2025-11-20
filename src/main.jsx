@@ -12,6 +12,8 @@ import LeadManagement from './pages/LeadManagement.jsx'
 import AddSalesAgent from './pages/AddSalesAgent.jsx'
 import SalesAgentManagement from './pages/SalesAgentManagement.jsx'
 import LeadList from './pages/LeadList.jsx'
+import LeadStatusView from './pages/LeadStatusView.jsx'
+import SalesAgentView from './pages/SalesAgentView.jsx'
 
 const router = createBrowserRouter([
   // {
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
     element: <LeadList />
   },
   {
+    path: "/lead/view",
+    element: <LeadStatusView />
+  },
+  {
     path: "/lead/management",
     element: <LeadManagement />
   },
@@ -41,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: "/sales-agent",
     element: <SalesAgentManagement />
+  },
+  {
+    path: "/sales-agent/view",
+    element: <SalesAgentView />
   },
   {
     path: "/sales-agent/add",

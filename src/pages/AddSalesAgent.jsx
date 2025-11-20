@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast';
 
 const AddSalesAgent = () => {
 
@@ -35,7 +36,9 @@ const AddSalesAgent = () => {
                 name: "",
                 email: "",
             })
+            toast.success("Sales agent added successfully")
         } catch (error) {
+            toast.error("Failed to add sales agent")
             console.log("Error while adding sales agent", error)
         }
     }
@@ -58,6 +61,7 @@ const AddSalesAgent = () => {
                     </form>
                 </div>
             </div>
+            <Toaster />
         </div>
     )
 }
