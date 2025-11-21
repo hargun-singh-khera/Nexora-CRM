@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
+import Sidebar from '../components/Sidebar';
 
 const AddSalesAgent = () => {
 
@@ -44,11 +45,12 @@ const AddSalesAgent = () => {
     }
 
     return (
-        <div className="container py-4">
+        <div className="container-fluid py-4">
             <div className="row">
-                <div className="col-md-5 mx-auto">
-                    <h2 className="mb-4 text-center">Add New Sales Agent</h2>
-                    <form onSubmit={handleSubmit} className="card px-4 py-5 shadow-sm rounded-sm">
+                <h2 className="mb-4 text-center">Add New Sales Agent</h2>
+                <Sidebar />
+                <div className="col-md-10 px-md-5 py-3 mx-auto">
+                    <form onSubmit={handleSubmit} className="card mx-md-5 col-md-8 mx-auto px-4 py-5 shadow-sm rounded-sm">
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">Agent Name</label>
                             <input type="text" value={formData.name} onChange={handleChange} className="form-control" id="name" name="name" placeholder="John Doe" />

@@ -22,7 +22,7 @@ const SalesAgentView = () => {
     }
 
     return (
-        <div className="container py-4">
+        <div className="container-fluid  py-4">
             <div className="row">
                 <h2 className="text-center mb-4">Leads by Sales Agent</h2>
                 <Sidebar />

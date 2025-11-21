@@ -68,7 +68,7 @@ const AddLead = () => {
   console.log(formData)
 
   return (
-    <div className="container py-4">
+    <div className="container-fluid  py-4">
       <div className="row">
         <div className="col-md-5 mx-auto">
           <h2 className="mb-4 text-center">Add New Lead</h2>

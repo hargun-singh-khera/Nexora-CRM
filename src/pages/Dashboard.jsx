@@ -12,7 +12,7 @@ const Dashboard = () => {
   const filteredLeads = status === "" ? data?.leads : data?.leads?.filter(lead => lead.status === status)
   console.log("filteredLeads", filteredLeads)
   return (
-    <div className="container pt-3">
+    <div className="container-fluid pt-3">
       <div className="row">
         <h2 className="text-center mb-4">Anvaya CRM Dashboard</h2>
         <div className="col-md-2">
@@ -25,11 +25,12 @@ const Dashboard = () => {
             <Link to={"/"} className="list-group-item">Settings</Link>
           </div>
         </div>
-        <div className="col-md-8 py-5 py-md-0 d-flex flex-column">
+        <div className="col-md-10 px-md-5 py-5 py-md-0 d-flex flex-column">
           <div className="row">
             {loading && <p>Loading...</p>}
+            {filteredLeads?.length === 0 && <p>No leads found.</p>}
             {filteredLeads?.map(lead => (
-              <div key={lead._id} className="col-md-6 mb-3">
+              <div key={lead._id} className="col-md-4 mb-3">
                 <div className="card border-0 shadow-sm p-2 rounded-4">
                   <div className="card-body">
                     <div className="card-title">
@@ -50,7 +51,7 @@ const Dashboard = () => {
           <hr />
           <div>
             <div className="row">
-              <div className="col">
+              <div className="col-md-4 mb-3">
                 <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
                   <div className="card-body">
                     <div className="card-title">
@@ -62,7 +63,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-md-4 mb-3">
                 <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
                   <div className="card-body">
                     <div className="card-title">
@@ -74,7 +75,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className="col">
+              <div className="col-md-4 mb-3">
                 <div className="card bg-light border-0 p-1 shadow-sm rounded-4">
                   <div className="card-body">
                     <div className="card-title">
@@ -89,10 +90,23 @@ const Dashboard = () => {
             </div>
           </div>
           <hr />
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <span>Quick Filters: </span>
             <span onClick={() => setStatus("New")} class="badge text-bg-secondary me-2">New</span>
             <span onClick={() => setStatus("Contacted")} class="badge text-bg-secondary">Contacted</span>
+          </div> */}
+          <div className="d-flex gap-3 align-items-center mb-3">
+            <p className="m-0">Quick Filter: </p>
+            <div className="d-flex gap-4">
+              <select name="status" value={status} onChange={(e) => setStatus(e.target.value)} className="form-select" aria-label="Default select example">
+                <option value="" selected disabled>Status</option>
+                <option value="New">New</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Qualified">Qualified</option>
+                <option value="Proposal sent">Proposal sent</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </div>
           </div>
           <div>
             <Link to={"/lead/add"} className="btn btn-primary">Add New Lead</Link>
