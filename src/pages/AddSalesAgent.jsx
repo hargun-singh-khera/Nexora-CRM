@@ -8,6 +8,7 @@ const AddSalesAgent = () => {
         name: "",
         email: "",
     })
+    const [loading, setLoading] = useState(false)
     
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -20,6 +21,7 @@ const AddSalesAgent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            setLoading(true)
             const response = await fetch("https://neo-g-backend-9d5c.vercel.app/api/agents", {
                 method: "POST",
                 headers: {
@@ -41,6 +43,8 @@ const AddSalesAgent = () => {
         } catch (error) {
             toast.error("Failed to add sales agent")
             console.log("Error while adding sales agent", error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -59,7 +63,10 @@ const AddSalesAgent = () => {
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" value={formData.email} onChange={handleChange} class="form-control" id="email" name="email" placeholder="name@example.com" />
                         </div>
-                        <button className="btn btn-primary">Add Agent</button>
+                        <button className="btn btn-primary" disabled={loading}>
+                            {loading && <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>}
+                            <span role="status">{loading ? "Submitting..." : "Add Agent"}</span>
+                        </button>
                     </form>
                 </div>
             </div>
