@@ -5,21 +5,28 @@ import Sidebar from '../components/Sidebar'
 const SalesAgentView = () => {
     const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
     console.log("data", data)
+
     const [salesAgent, setSalesAgent] = useState("")
     const [status, setStatus] = useState("")
     const [priority, setPriority] = useState("")
+    const [isTimeToClose, setIsTimeToClose] = useState(false)
+
     console.log("salesAgent", salesAgent)
     const { data: salesAgentData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
     // console.log(salesAgentData)
-    const filteredLeads = salesAgent !== "" ? data?.leads?.filter(lead => lead.salesAgent._id === salesAgent) : status !== "" ? data?.leads?.filter(lead => lead.status === status) : priority !== "" ? data?.leads?.filter(lead => lead.priority === priority) : data?.leads
-    console.log("filteredLeads", filteredLeads)
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target
         if(name === "salesAgent") setSalesAgent(value)
         if(name === "status") setStatus(value)
         if(name === "priority") setPriority(value)
     }
+
+    const filteredLeads = salesAgent !== "" ? data?.leads?.filter(lead => lead.salesAgent._id === salesAgent) : status !== "" ? data?.leads?.filter(lead => lead.status === status) : priority !== "" ? data?.leads?.filter(lead => lead.priority === priority) : data?.leads
+    console.log("filteredLeads", filteredLeads)
+
+    if(isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
+    else filteredLeads?.sort((a, b) => b.timeToClose - a.timeToClose)   
 
     return (
         <div className="container-fluid  py-4">
@@ -81,7 +88,7 @@ const SalesAgentView = () => {
                     </div>
                     <div className="mb-3">
                         <span>Sort by: </span>
-                        <span className="badge text-bg-secondary">Time to Close</span>
+                        <button onClick={() => setIsTimeToClose(prev => !prev)} className="btn btn-outline-success">Time to Close</button>
                     </div>
                 </div>
             </div>

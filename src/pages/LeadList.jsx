@@ -13,6 +13,7 @@ const LeadList = () => {
     const [status, setStatus] = useState("")
     const [salesAgent, setSalesAgent] = useState("")
     const [priority, setPriority] = useState("")
+    const [isTimeToClose, setIsTimeToClose] = useState(false)
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -20,8 +21,19 @@ const LeadList = () => {
         if(name === "priority") setPriority(value)
         if(name === "salesAgent") setSalesAgent(value) 
     }
+    console.log("priority", priority)
+    console.log("isTimeToClose", isTimeToClose)
     // console.log("salesAgent", salesAgent)
     const filteredLeads = status !== "" ? data?.leads?.filter(lead => lead.status === status) : salesAgent !== "" ? data?.leads?.filter(lead => lead.salesAgent._id === salesAgent) : data?.leads
+    const priorityOrder = {
+        "High": 1,
+        "Medium": 2,
+        "Low": 3,
+    }
+    // if(priority !== "") filteredLeads?.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
+    if(isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
+    else filteredLeads?.sort((a, b) => b.timeToClose - a.timeToClose)   
+    console.log("filteredLeads", filteredLeads) 
 
     return (
         <div className="container-fluid  py-4">
@@ -81,7 +93,7 @@ const LeadList = () => {
                                 <option value="High">High</option>
                             </select>
                         </div>
-                        <button class="btn btn-secondary">Time to Close</button>
+                        <button onClick={() => setIsTimeToClose(prev => !prev)} className="btn btn-outline-success">Time to Close</button>
                     </div>
                     <Link to={"/lead/add"} className="btn btn-primary">Add New Lead</Link>
                 </div>
