@@ -13,6 +13,7 @@ const LeadList = () => {
     const [status, setStatus] = useState("")
     const [salesAgent, setSalesAgent] = useState("")
     const [priority, setPriority] = useState("")
+    const [isPriority, setIsPriority] = useState(false)
     const [isTimeToClose, setIsTimeToClose] = useState(false)
 
     const handleChange = (e) => {
@@ -27,13 +28,13 @@ const LeadList = () => {
     const filteredLeads = status !== "" ? data?.leads?.filter(lead => lead.status === status) : salesAgent !== "" ? data?.leads?.filter(lead => lead.salesAgent._id === salesAgent) : data?.leads
     const priorityOrder = {
         "High": 1,
-        "Medium": 2,
-        "Low": 3,
+        // "Medium": 2,
+        // "Low": 3
     }
-    // if(priority !== "") filteredLeads?.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
+    if(isPriority) filteredLeads?.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
+    console.log("filteredLeads", filteredLeads) 
     if(isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
     else filteredLeads?.sort((a, b) => b.timeToClose - a.timeToClose)   
-    console.log("filteredLeads", filteredLeads) 
 
     return (
         <div className="container-fluid  py-4">
@@ -50,6 +51,7 @@ const LeadList = () => {
                                 <th scope="col">Name</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Sales Agent</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,6 +61,9 @@ const LeadList = () => {
                                     <td>{lead.name}</td>
                                     <td>{lead.status}</td>
                                     <td>{lead.salesAgent.name}</td>
+                                    <td>
+                                        <Link to={`/lead/list/${lead._id}`} className="btn btn-primary btn-sm">View</Link>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -85,14 +90,15 @@ const LeadList = () => {
                     </div>
                     <div className="d-flex gap-3 align-items-center mb-3">
                         <p className="m-0">Sort by: </p>
-                        <div className="d-flex gap-4">
+                        {/* <div className="d-flex gap-4">
                             <select name="priority" value={priority} onChange={handleChange} className="form-select" aria-label="Default select example">
                                 <option value="" selected disabled>Priority</option>
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
                             </select>
-                        </div>
+                        </div> */}
+                        <button onClick={() => setIsPriority(prev => !prev)} className="btn btn-outline-success">Priority</button>
                         <button onClick={() => setIsTimeToClose(prev => !prev)} className="btn btn-outline-success">Time to Close</button>
                     </div>
                     <Link to={"/lead/add"} className="btn btn-primary">Add New Lead</Link>

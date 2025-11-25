@@ -1,15 +1,17 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import useFetch from '../useFetch'
 
 const LeadManagement = () => {
-  const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/lead/69233a9fefd734b53aef55bf")
+  const { leadId } = useParams()
+
+  const { data, loading, error } = useFetch(`https://neo-g-backend-9d5c.vercel.app/api/lead/${leadId}`)
   console.log("data", data)
   const lead = data?.lead
   console.log("lead", lead)
 
-  const { data: leadComments, loading: commentLoading, error: commentError } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads/69233a9fefd734b53aef55bf/comments")
+  const { data: leadComments, loading: commentLoading, error: commentError } = useFetch(`https://neo-g-backend-9d5c.vercel.app/api/leads/${leadId}/comments`)
   console.log("leadComments", leadComments) 
   const comments = leadComments?.comments
 
