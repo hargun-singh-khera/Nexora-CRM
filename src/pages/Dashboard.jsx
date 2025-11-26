@@ -30,7 +30,7 @@ const Dashboard = () => {
             {loading && <p>Loading...</p>}
             {filteredLeads?.length === 0 && <p>No leads found.</p>}
             {filteredLeads?.map(lead => (
-              <div key={lead._id} className="col-md-4 mb-3">
+              <Link to={`/lead/list/${lead._id}`} key={lead._id} className="col-md-4 mb-3 text-decoration-none hover-cursor-pointer">
                 <div className="card border-0 shadow-sm p-2 rounded-4">
                   <div className="card-body">
                     <div className="card-title">
@@ -45,7 +45,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           <hr />

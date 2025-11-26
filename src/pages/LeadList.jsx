@@ -24,17 +24,19 @@ const LeadList = () => {
     }
     console.log("priority", priority)
     console.log("isTimeToClose", isTimeToClose)
+    console.log("isPriority", isPriority)
     // console.log("salesAgent", salesAgent)
     const filteredLeads = status !== "" ? data?.leads?.filter(lead => lead.status === status) : salesAgent !== "" ? data?.leads?.filter(lead => lead.salesAgent._id === salesAgent) : data?.leads
     const priorityOrder = {
         "High": 1,
-        // "Medium": 2,
-        // "Low": 3
+        "Medium": 2,
+        "Low": 3
     }
     if(isPriority) filteredLeads?.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
+    else filteredLeads?.sort((a, b) => priorityOrder[b.priority] - priorityOrder[a.priority])
     console.log("filteredLeads", filteredLeads) 
     if(isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
-    else filteredLeads?.sort((a, b) => b.timeToClose - a.timeToClose)   
+    // else filteredLeads?.sort((a, b) => b.timeToClose - a.timeToClose)   
 
     return (
         <div className="container-fluid  py-4">
@@ -90,14 +92,7 @@ const LeadList = () => {
                     </div>
                     <div className="d-flex gap-3 align-items-center mb-3">
                         <p className="m-0">Sort by: </p>
-                        {/* <div className="d-flex gap-4">
-                            <select name="priority" value={priority} onChange={handleChange} className="form-select" aria-label="Default select example">
-                                <option value="" selected disabled>Priority</option>
-                                <option value="Low">Low</option>
-                                <option value="Medium">Medium</option>
-                                <option value="High">High</option>
-                            </select>
-                        </div> */}
+                        
                         <button onClick={() => setIsPriority(prev => !prev)} className="btn btn-outline-success">Priority</button>
                         <button onClick={() => setIsTimeToClose(prev => !prev)} className="btn btn-outline-success">Time to Close</button>
                     </div>
