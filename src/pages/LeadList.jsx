@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import useFetch from '../useFetch'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 const LeadList = () => {
     const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")

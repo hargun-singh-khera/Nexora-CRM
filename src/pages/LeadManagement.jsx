@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import { Link, useParams } from 'react-router-dom'
 import useFetch from '../useFetch'
+import Select from 'react-select'
 import toast, { Toaster } from 'react-hot-toast';
 
 
@@ -9,18 +10,18 @@ const LeadManagement = () => {
   const { leadId } = useParams()
 
   const { data, loading: leadLoading, error } = useFetch(`https://neo-g-backend-9d5c.vercel.app/api/lead/${leadId}`)
-  console.log("data", data)
+  // console.log("data", data)
   const lead = data?.lead
-  console.log("lead", lead)
+  // console.log("lead", lead)
 
   const { data: salesAgentData, loading: salesAgentLoading, error: salesAgentError } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
-  console.log("salesAgentData", salesAgentData)
+  // console.log("salesAgentData", salesAgentData)
 
   const [commentsData, setCommnentsData] = useState("")
   const [loading, setLoading] = useState(false)
 
   const { data: leadComments, loading: commentLoading, error: commentError } = useFetch(`https://neo-g-backend-9d5c.vercel.app/api/leads/${leadId}/comments`)
-  console.log("leadComments", leadComments)
+  // console.log("leadComments", leadComments)
   const comments = leadComments?.comments
 
   useEffect(() => {
@@ -30,13 +31,19 @@ const LeadManagement = () => {
   }, [comments])
 
   const commentDate = new Date()
-  console.log(commentDate)
+  // console.log(commentDate)
 
   const [commentText, setCommentText] = useState("")
   const [author, setAuthor] = useState("")
   const [isEdit, setIsEdit] = useState(false)
+  const [leads, setLeads] = useState({})
 
-  console.log("isEdit", isEdit)
+  useEffect(() => {
+    setLeads(lead)
+  }, [lead])
+
+  // console.log("isEdit", isEdit)
+  // console.log("leadsData", leads)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -56,7 +63,7 @@ const LeadManagement = () => {
         throw new Error("Failed to add comment.")
       }
       const data = await response.json()
-      console.log("data", data)
+      // console.log("data", data)
       toast.success("Comment added successfully")
       setCommnentsData(prev => [...prev, data?.comment])
       setCommentText("")
@@ -69,40 +76,70 @@ const LeadManagement = () => {
     }
   }
 
-  console.log("commentsData", commentsData)
+  // console.log("commentsData", commentsData)
 
-  const [formData, setFormData] = useState({
-    name: "",
-    salesAgent: "",
-    source: "",
-    status: "",
-    priority: "",
-    timeToClose: 1,
-  })
+  const priorityOptions = [
+    { value: 'Low', label: 'Low' },
+    { value: 'Medium', label: 'Medium' },
+    { value: 'High', label: 'High' }
+  ]
+
+  const sourceOptions = [
+    { value: 'Website', label: 'Website' },
+    { value: 'Referral', label: 'Referral' },
+    { value: 'Cold Call', label: 'Cold Call' },
+    { value: 'Advertisement', label: 'Advertisement' },
+    { value: 'Email', label: 'Email' },
+    { value: 'Other', label: 'Other' }
+  ]
+
+  const statusOptions = [
+    { value: 'New', label: 'New' },
+    { value: 'Contacted', label: 'Contacted' },
+    { value: 'Qualified', label: 'Qualified' },
+    { value: 'Proposal sent', label: 'Proposal sent' },
+    { value: 'Closed', label: 'Closed' },
+  ]
+
+  const salesAgentOptions = salesAgentData?.salesAgent?.map(agent => ({ value: agent?._id, label: agent?.name }))
+
+  // console.log("leads", leads)
+  const [formData, setFormData] = useState({})
 
   useEffect(() => {
-    if(lead) {
-      setFormData({
-        name: lead?.name,
-        salesAgent: lead?.salesAgent?._id,
-        source: lead?.source,
-        status: lead?.status,
-        priority: lead?.priority,
-        timeToClose: Number(lead?.timeToClose),
-      })  
-    }
-  }, [lead])
+    // console.log("leads updated now updating formData")
+    setFormData({
+      name: leads?.name,
+      salesAgent: { _id: leads?.salesAgent?._id, name: leads?.salesAgent?.name },
+      source: leads?.source,
+      status: leads?.status,
+      priority: leads?.priority,
+      timeToClose: leads?.timeToClose,
+    })
+  }, [leads])
 
-  console.log("formData", formData)
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prev) => ({...prev, [name]: name === "timeToClose" ? Number(value) : value }))
+    setFormData((prev) => ({ ...prev, [name]: name === "timeToClose" ? Number(value) : value }))
   }
+
+  const handleSelectChange = (selectedOption, actionMeta) => {
+    // console.log("selectedOption", selectedOption)
+    // console.log("actionMeta", actionMeta)
+    const name = actionMeta?.name
+    const value = selectedOption?.value
+    // console.log("value", value)
+    const updatedSalesAgent = salesAgentOptions?.find(agent => agent.value === value)
+    // console.log("updatedAgent", updatedSalesAgent)
+    setFormData((prev) => ({ ...prev, [name]: name === "salesAgent" ? { _id: updatedSalesAgent.value, name: updatedSalesAgent.label } : value }))
+  }
+
+  // console.log("formData", formData)
 
   const handleUpdateLeads = async (e) => {
     e.preventDefault()
-    if(!isEdit) {
+    if (!isEdit) {
       setIsEdit(true)
       return
     }
@@ -115,12 +152,13 @@ const LeadManagement = () => {
         },
         body: JSON.stringify(formData)
       })
-      console.log("submitting form", formData)
-      if(!response.ok) {
+      // console.log("submitting form", formData)
+      if (!response.ok) {
         throw new Error("Failed to update lead.")
       }
       const data = await response.json()
-      console.log("data", data)
+      // console.log("updated data", data)
+      setLeads(formData)
       toast.success("Lead updated successfully")
       setIsEdit(false)
     } catch (error) {
@@ -135,7 +173,11 @@ const LeadManagement = () => {
         <h2 className="text-center mb-4">Lead Management</h2>
         <Sidebar />
         <div className="col-md-8 mx-auto">
-          {leadLoading && <p>Loading...</p>}
+          {leadLoading && <div className="d-flex justify-content-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>}
           {error && <p>{error}</p>}
           {!leadLoading && !error && (
             <form onSubmit={handleUpdateLeads}>
@@ -149,7 +191,7 @@ const LeadManagement = () => {
                 <tbody>
                   <tr>
                     <th scope="row">Lead Name</th>
-                    {!isEdit ? (<td>{lead?.name}</td>) : (
+                    {!isEdit ? (<td>{leads?.name}</td>) : (
                       <td>
                         <input type="text" value={formData.name} onChange={handleChange} name="name" className="form-control" id="name" ></input>
                       </td>
@@ -157,43 +199,39 @@ const LeadManagement = () => {
                   </tr>
                   <tr>
                     <th scope="row">Sales Agent</th>
-                    {!isEdit ? (<td>{lead?.salesAgent?.name}</td>) : (
+                    {!isEdit ? (<td>{leads?.salesAgent?.name}</td>) : (
                       <td>
-                        <select value={author} onChange={(e) => setAuthor(e.target.value)} className="form-select my-1" aria-label="Default select example">
-                          {salesAgentData?.salesAgent?.map(agent => (
-                            <option key={agent._id} value={agent?._id}>{agent?.name}</option>
-                          ))}
-                        </select>
+                        <Select options={salesAgentOptions} onChange={handleSelectChange} name="salesAgent" defaultValue={salesAgentOptions?.find(option => option.value === leads?.salesAgent?._id)} />
                       </td>
                     )}
                   </tr>
                   <tr>
                     <th scope="row">Lead Source</th>
-                    {!isEdit ? (<td>{lead?.source}</td>) : (
+                    {!isEdit ? (<td>{leads?.source}</td>) : (
                       <td>
-                        <input type="text" value={formData.source} onChange={handleChange} name="source" className="form-control" id="source" ></input>
+                        <Select options={sourceOptions} onChange={handleSelectChange} name="source" defaultValue={sourceOptions?.find(option => option.value === leads?.source)} />
                       </td>
                     )}
                   </tr>
                   <tr>
                     <th scope="row">Lead Status</th>
-                    {!isEdit ? (<td>{lead?.status}</td>) : (
+                    {!isEdit ? (<td>{leads?.status}</td>) : (
                       <td>
-                        <input type="text" value={formData.status} onChange={handleChange} name="status" className="form-control" id="status" ></input>
+                        <Select options={statusOptions} onChange={handleSelectChange} name="status" defaultValue={statusOptions?.find(option => option.value === leads?.status)} />
                       </td>
                     )}
                   </tr>
                   <tr>
                     <th scope="row">Priority</th>
-                    {!isEdit ? (<td>{lead?.priority}</td>) : (
+                    {!isEdit ? (<td>{leads?.priority}</td>) : (
                       <td>
-                        <input type="text" value={formData.priority} onChange={handleChange} name="priority" className="form-control" id="priority" ></input>
+                        <Select options={priorityOptions} onChange={handleSelectChange} name="priority" defaultValue={priorityOptions?.find(option => option.value === lead?.priority)} />
                       </td>
                     )}
                   </tr>
                   <tr>
                     <th scope="row">Time to Close</th>
-                    {!isEdit ? (<td>{lead?.timeToClose}</td>) : (
+                    {!isEdit ? (<td>{leads?.timeToClose}</td>) : (
                       <td>
                         <input type="number" value={formData.timeToClose} onChange={handleChange} name="timeToClose" className="form-control" id="timeToClose" ></input>
                       </td>
@@ -207,7 +245,11 @@ const LeadManagement = () => {
           <hr />
           <div>
             <h4 className="text-center my-4 mb-4">Comments Section</h4>
-            {commentLoading && <p>Loading...</p>}
+            {commentLoading && <div className="d-flex justify-content-center mb-3">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>}
             {commentError && <p>{commentError}</p>}
             {!commentLoading && !commentError && commentsData?.length === 0 && <p>No comments found.</p>}
             {!commentLoading && !commentError && commentsData?.length > 0 && commentsData?.map(comment => (
@@ -225,10 +267,10 @@ const LeadManagement = () => {
               <div className="card">
                 <div className="card-body">
                   {/* <label for="comment" className="form-label">Add Comment</label> */}
-                  <textarea value={commentText} onChange={(e) => setCommentText(e.target.value)} className="form-control mb-3 p-3" id="comment" placeholder="Write your comment here..." rows="3"></textarea>
-                  {/* <label for="comment" class="form-label">Author</label> */}
+                  <textarea value={commentText} onChange={(e) => setCommentText(e.target.value)} className="form-control mb-3 p-3" id="comment" placeholder="Write your comment here..." rows="3" />
+                  {/* <label for="comment" className="form-label">Author</label> */}
                   <select value={author} onChange={(e) => setAuthor(e.target.value)} className="form-select mb-3" aria-label="Default select example">
-                    <option value="" selected disabled>Select Author</option>
+                    <option value="" disabled>Select Author</option>
                     {salesAgentData?.salesAgent?.map(agent => (
                       <option key={agent._id} value={agent?._id}>{agent?.name}</option>
                     ))}
