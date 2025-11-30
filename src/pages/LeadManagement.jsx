@@ -144,7 +144,6 @@ const LeadManagement = () => {
       return
     }
     try {
-      // https://neo-g-backend-9d5c.vercel.app/api/leads/${leadId}
       const response = await fetch(`https://neo-g-backend-9d5c.vercel.app/api/leads/${leadId}`, {
         method: "POST",
         headers: {

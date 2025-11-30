@@ -12,8 +12,12 @@ const SalesAgentManagement = () => {
                 <h2 className="text-center mb-4">Sales Agent Management</h2>
                 <Sidebar />
                 <div className="col-md-8 mx-auto">
-                    {loading && <p>Loading...</p>}
-                    {data?.salesAgent?.length > 0 && <table class="table table-striped table-hover">
+                    {loading && <div className="d-flex py-4 justify-content-center">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>}
+                    {!loading && data?.salesAgent?.length > 0 && <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">S.No.</th>
@@ -32,7 +36,7 @@ const SalesAgentManagement = () => {
                             
                         </tbody>
                     </table>}
-                    <Link to={"/sales-agent/add"} className="btn btn-primary">Add New Sales Agent</Link>
+                    {!loading && data?.salesAgent?.length > 0 && <Link to={"/sales-agent/add"} className="btn btn-primary">Add New Sales Agent</Link>}
                 </div>
             </div>
         </div>

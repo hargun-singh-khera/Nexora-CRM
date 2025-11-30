@@ -8,9 +8,9 @@ const Dashboard = () => {
   const contactedLeads = data?.leads?.filter(lead => lead.status === "Contacted")
   const qualifiedLeads = data?.leads?.filter(lead => lead.status === "Qualified")
   const [status, setStatus] = useState("")
-  console.log("data", data)
+  // console.log("data", data)
   const filteredLeads = status === "" ? data?.leads : data?.leads?.filter(lead => lead.status === status)
-  console.log("filteredLeads", filteredLeads)
+  // console.log("filteredLeads", filteredLeads)
   return (
     <div className="container-fluid pt-3">
       <div className="row">
@@ -18,10 +18,10 @@ const Dashboard = () => {
         <div className="col-md-2">
           <div className="list-group">
             <Link to={"/"} className="list-group-item" aria-current="true">Dashboard</Link>
-            <Link to={"/lead/list"} className="list-group-item">Leads</Link>
+            <Link to={"/leads"} className="list-group-item">Leads</Link>
             <Link to={"/"} className="list-group-item">Sales</Link>
             <Link to={"/sales-agent"} className="list-group-item">Agents</Link>
-            <Link to={"/"} className="list-group-item">Reports</Link>
+            <Link to={"/lead/reports"} className="list-group-item">Reports</Link>
             <Link to={"/"} className="list-group-item">Settings</Link>
           </div>
         </div>
@@ -99,7 +99,7 @@ const Dashboard = () => {
             <p className="m-0">Quick Filter: </p>
             <div className="d-flex gap-4">
               <select name="status" value={status} onChange={(e) => setStatus(e.target.value)} className="form-select" aria-label="Default select example">
-                <option value="" selected disabled>Status</option>
+                <option defaultValue="" disabled>Status</option>
                 <option value="New">New</option>
                 <option value="Contacted">Contacted</option>
                 <option value="Qualified">Qualified</option>

@@ -30,11 +30,11 @@ const router = createBrowserRouter([
     element: <LeadManagement />
   },
   {
-    path: "/lead/list",
+    path: "/leads",
     element: <LeadList />
   },
   {
-    path: "/lead/view",
+    path: "/leads/view",
     element: <LeadStatusView />
   },
   {
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
     element: <AddSalesAgent />
   },
   {
-    path: "/reports",
+    path: "/lead/reports",
     element: <Reports />
   }
 ])

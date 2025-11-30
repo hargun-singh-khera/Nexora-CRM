@@ -2,41 +2,72 @@ import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import useFetch from '../useFetch'
 import { Link, useSearchParams } from 'react-router-dom'
+import Select from 'react-select'
 
 const LeadList = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    
     const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
-    console.log("data", data)
+    // console.log("data", data)
 
     const { data: salesAgentData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
-    console.log(salesAgentData)
+    console.log("salesAgentData", salesAgentData)
+
+
+    const statusOptions = [
+        { value: 'New', label: 'New' },
+        { value: 'Contacted', label: 'Contacted' },
+        { value: 'Qualified', label: 'Qualified' },
+        { value: 'Proposal sent', label: 'Proposal sent' },
+        { value: 'Closed', label: 'Closed' },
+    ]
+
+    const salesAgentOptions = salesAgentData?.salesAgent?.map(agent => ({ value: agent._id, label: agent.name }))
 
     const [status, setStatus] = useState("")
     const [salesAgent, setSalesAgent] = useState("")
-    const [priority, setPriority] = useState("")
     const [isPriority, setIsPriority] = useState(false)
     const [isTimeToClose, setIsTimeToClose] = useState(false)
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        if(name === "status") setStatus(value)
-        if(name === "priority") setPriority(value)
-        if(name === "salesAgent") setSalesAgent(value) 
+    const handleSelectChange = (selectedOption, actionMeta) => {
+        // console.log("selectedOption", selectedOption, "actionMeta", actionMeta)
+        const name = actionMeta?.name
+        const value = selectedOption?.value
+        if (name === "status") {
+            setStatus(value)
+            setSearchParams((searchParams) => {
+                searchParams.set("status", value)
+                return searchParams
+            })
+        }
+        if (name === "salesAgent") {
+            setSalesAgent(value)
+            setSearchParams((searchParams) => {
+                searchParams.set("salesAgent", selectedOption?.label)
+                return searchParams
+            })
+        }
     }
-    console.log("priority", priority)
-    console.log("isTimeToClose", isTimeToClose)
-    console.log("isPriority", isPriority)
-    // console.log("salesAgent", salesAgent)
-    const filteredLeads = status !== "" ? data?.leads?.filter(lead => lead.status === status) : salesAgent !== "" ? data?.leads?.filter(lead => lead.salesAgent._id === salesAgent) : data?.leads
+
+    let filteredLeads = [...(data?.leads) || []]
+
+    if (status) {
+        filteredLeads = filteredLeads?.filter(lead => lead.status === status)
+    }
+    if (salesAgent) {
+        filteredLeads = filteredLeads?.filter(lead => lead.salesAgent._id === salesAgent)
+    }
+    // console.log("filteredLeads", filteredLeads)
+
     const priorityOrder = {
         "High": 1,
         "Medium": 2,
         "Low": 3
     }
-    if(isPriority) filteredLeads?.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
+    if (isPriority) filteredLeads?.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
     else filteredLeads?.sort((a, b) => priorityOrder[b.priority] - priorityOrder[a.priority])
-    console.log("filteredLeads", filteredLeads) 
-    if(isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
-    // else filteredLeads?.sort((a, b) => b.timeToClose - a.timeToClose)   
+
+    if (isTimeToClose) filteredLeads?.sort((a, b) => a.timeToClose - b.timeToClose)
 
     return (
         <div className="container-fluid  py-4">
@@ -44,9 +75,13 @@ const LeadList = () => {
                 <h2 className="text-center mb-4">Lead List</h2>
                 <Sidebar />
                 <div className="col-md-8 mx-auto">
-                    {loading && <p>Loading ...</p>}
-                    {filteredLeads?.length === 0 && <p>No leads found.</p>}
-                    {filteredLeads?.length > 0 && <table class="table table-striped table-hover">
+                    {loading && <div className="d-flex justify-content-center">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>}
+                    {!loading && filteredLeads?.length === 0 && <p>No leads found.</p>}
+                    {!loading && filteredLeads?.length > 0 && <table className="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">S.No.</th>
@@ -74,25 +109,14 @@ const LeadList = () => {
                     <div className="d-flex gap-3 align-items-center mb-3">
                         <p className="m-0">Filters: </p>
                         <div className="d-flex gap-4">
-                            <select name="status" value={status} onChange={handleChange} className="form-select" aria-label="Default select example">
-                                <option value="" selected disabled>Status</option>
-                                <option value="New">New</option>
-                                <option value="Contacted">Contacted</option>
-                                <option value="Qualified">Qualified</option>
-                                <option value="Proposal sent">Proposal sent</option>
-                                <option value="Closed">Closed</option>
-                            </select>
-                            <select name="salesAgent" value={salesAgent} onChange={handleChange} className="form-select" aria-label="Default select example">
-                                <option value="" selected disabled>Sales Agent</option>
-                                {salesAgentData?.salesAgent?.map((agent, index) => 
-                                    <option key={index} value={agent._id}>{agent.name}</option>
-                                )}
-                            </select>
+                            <Select name="status" options={statusOptions} value={statusOptions.find(option => option.value === status)} onChange={handleSelectChange} placeholder={"Status"} />
+
+                            <Select name="salesAgent" options={salesAgentOptions} value={salesAgentOptions?.find(option => option.value === salesAgent)} onChange={handleSelectChange} placeholder={"Sales Agent"} />
                         </div>
                     </div>
                     <div className="d-flex gap-3 align-items-center mb-3">
                         <p className="m-0">Sort by: </p>
-                        
+
                         <button onClick={() => setIsPriority(prev => !prev)} className="btn btn-outline-success">Priority</button>
                         <button onClick={() => setIsTimeToClose(prev => !prev)} className="btn btn-outline-success">Time to Close</button>
                     </div>
