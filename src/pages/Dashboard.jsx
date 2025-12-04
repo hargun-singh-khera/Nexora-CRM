@@ -27,7 +27,11 @@ const Dashboard = () => {
         </div>
         <div className="col-md-10 px-md-5 py-5 py-md-0 d-flex flex-column">
           <div className="row">
-            {loading && <p>Loading...</p>}
+            {loading && <div className="d-flex py-4 justify-content-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>}
             {filteredLeads?.length === 0 && <p>No leads found.</p>}
             {filteredLeads?.map(lead => (
               <Link to={`/lead/list/${lead._id}`} key={lead._id} className="col-md-4 mb-3 text-decoration-none hover-cursor-pointer">
