@@ -40,7 +40,7 @@ const Settings = () => {
 
     const handleDeleteAgent = async (agentId) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/agents/${agentId}`, {
+            const response = await fetch(`https://neo-g-backend-9d5c.vercel.app/api/agents/${agentId}`, {
                 method: "DELETE"
             })
             if (!response.ok) {
