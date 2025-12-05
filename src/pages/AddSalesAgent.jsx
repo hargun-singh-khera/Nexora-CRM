@@ -9,7 +9,7 @@ const AddSalesAgent = () => {
         email: "",
     })
     const [loading, setLoading] = useState(false)
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prev) => ({
@@ -30,7 +30,7 @@ const AddSalesAgent = () => {
                 body: JSON.stringify(formData)
             })
             console.log("response", response)
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error("Failed to add sales agent.")
             }
             const data = await response.json()
@@ -53,21 +53,23 @@ const AddSalesAgent = () => {
             <div className="row">
                 <h2 className="mb-4 text-center">Add New Sales Agent</h2>
                 <Sidebar />
-                <div className="col-md-10 px-md-5 py-3 mx-auto">
-                    <form onSubmit={handleSubmit} className="card mx-md-5 col-md-8 mx-auto px-4 py-5 shadow-sm rounded-sm">
-                        <div className="mb-3">
-                            <label htmlFor="name" className="form-label">Agent Name</label>
-                            <input type="text" value={formData.name} onChange={handleChange} className="form-control" id="name" name="name" placeholder="John Doe" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" value={formData.email} onChange={handleChange} class="form-control" id="email" name="email" placeholder="name@example.com" />
-                        </div>
-                        <button className="btn btn-primary" disabled={loading}>
-                            {loading && <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>}
-                            <span role="status">{loading ? "Submitting..." : "Add Agent"}</span>
-                        </button>
-                    </form>
+                <div className="col-md-10 py-3 d-flex justify-content-center">
+                    <div className="col-md-8">
+                        <form onSubmit={handleSubmit} className="card mx-md-5 col-md-8 mx-auto px-4 py-5 shadow-sm rounded-sm">
+                            <div className="mb-3">
+                                <label htmlFor="name" className="form-label">Agent Name</label>
+                                <input type="text" value={formData.name} onChange={handleChange} className="form-control" id="name" name="name" placeholder="John Doe" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" value={formData.email} onChange={handleChange} class="form-control" id="email" name="email" placeholder="name@example.com" />
+                            </div>
+                            <button className="btn btn-primary" disabled={loading}>
+                                {loading && <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>}
+                                <span role="status">{loading ? "Submitting..." : "Add Agent"}</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <Toaster />
