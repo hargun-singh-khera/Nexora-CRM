@@ -22,7 +22,7 @@ const Dashboard = () => {
             <Link to={"/"} className="list-group-item">Sales</Link>
             <Link to={"/sales-agent"} className="list-group-item">Agents</Link>
             <Link to={"/lead/reports"} className="list-group-item">Reports</Link>
-            <Link to={"/"} className="list-group-item">Settings</Link>
+            <Link to={"/settings"} className="list-group-item">Settings</Link>
           </div>
         </div>
         <div className="col-md-10 px-md-5 py-5 py-md-0 d-flex flex-column">

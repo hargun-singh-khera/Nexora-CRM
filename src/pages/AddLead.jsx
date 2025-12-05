@@ -3,6 +3,7 @@ import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 import useFetch from '../useFetch'
 import toast, { Toaster } from 'react-hot-toast';
+import Sidebar from '../components/Sidebar';
 
 const animatedComponents = makeAnimated()
 
@@ -113,52 +114,55 @@ const AddLead = () => {
   return (
     <div className="container-fluid  py-4">
       <div className="row">
-        <div className="col-md-5 mx-auto">
-          <h2 className="mb-4 text-center">Add New Lead</h2>
-          <form onSubmit={handleSubmit} className="card px-4 py-5 shadow-sm rounded-sm">
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">Lead Name</label>
-              <input type="text" value={formData.name} onChange={handleChange} className="form-control" id="name" name="name" placeholder="Name of customer or company" />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="source" className="form-label">Lead Source</label>
-              <Select id="source" name="source" value={formData.source} options={sourceOptions} onChange={handleSelectChange} />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="salesAgent" className="form-label">Sales Agent</label>
-              <Select id="salesAgent" name="salesAgent" value={formData.salesAgent} options={salesAgentOptions} onChange={handleSelectChange} />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="status" className="form-label">Lead Status</label>
-              <Select id="status" name="status" value={formData.status} options={leadStatusOptions} onChange={handleSelectChange} />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="priority" className="form-label">Priority</label>
-              <Select id="priority" name="priority" value={formData.priority} options={priorityOptions} onChange={handleSelectChange} />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="timeToClose" className="form-label">Time to Close</label>
-              <input id="timeToClose" name="timeToClose" min={1} max={30} type="number" value={formData.timeToClose} onChange={handleChange} className="form-control" placeholder="Enter number of days" />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="tags" className="form-label">Tags</label>
-              <Select
-                id="tags"
-                isMulti
-                name="tags"
-                value={formData.tags}
-                components={animatedComponents}
-                onChange={handleSelectChange}
-                options={tagOptions}
-                className="basic-multi-select"
-                classNamePrefix="select"
-              />
-            </div>
-            <button className="btn btn-primary" disabled={loading}>
-              {loading && <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>}
-              <span role="status">{loading ? "Submitting..." : "Add Lead"}</span>
-            </button>
-          </form>
+        <h2 className="mb-4 text-center">Add New Lead</h2>
+        <Sidebar />
+        <div className="col-md-8 d-flex justify-content-center align-items-center">
+          <div className="col-md-8">
+            <form onSubmit={handleSubmit} className="card px-4 py-5 shadow-sm rounded-sm">
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">Lead Name</label>
+                <input type="text" value={formData.name} onChange={handleChange} className="form-control" id="name" name="name" placeholder="Name of customer or company" />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="source" className="form-label">Lead Source</label>
+                <Select id="source" name="source" value={formData.source} options={sourceOptions} onChange={handleSelectChange} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="salesAgent" className="form-label">Sales Agent</label>
+                <Select id="salesAgent" name="salesAgent" value={formData.salesAgent} options={salesAgentOptions} onChange={handleSelectChange} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="status" className="form-label">Lead Status</label>
+                <Select id="status" name="status" value={formData.status} options={leadStatusOptions} onChange={handleSelectChange} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="priority" className="form-label">Priority</label>
+                <Select id="priority" name="priority" value={formData.priority} options={priorityOptions} onChange={handleSelectChange} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="timeToClose" className="form-label">Time to Close</label>
+                <input id="timeToClose" name="timeToClose" min={1} max={30} type="number" value={formData.timeToClose} onChange={handleChange} className="form-control" placeholder="Enter number of days" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="tags" className="form-label">Tags</label>
+                <Select
+                  id="tags"
+                  isMulti
+                  name="tags"
+                  value={formData.tags}
+                  components={animatedComponents}
+                  onChange={handleSelectChange}
+                  options={tagOptions}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                />
+              </div>
+              <button className="btn btn-primary" disabled={loading}>
+                {loading && <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>}
+                <span role="status">{loading ? "Submitting..." : "Add Lead"}</span>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
       <Toaster />
