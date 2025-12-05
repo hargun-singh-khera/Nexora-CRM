@@ -117,7 +117,7 @@ const AddLead = () => {
         <h2 className="mb-4 text-center">Add New Lead</h2>
         <Sidebar />
         <div className="col-md-8 d-flex justify-content-center">
-          <div className="col-md-8">
+          <div className="col col-md-8">
             <form onSubmit={handleSubmit} className="card px-4 py-5 shadow-sm rounded-sm">
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">Lead Name</label>

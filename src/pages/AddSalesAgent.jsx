@@ -53,16 +53,16 @@ const AddSalesAgent = () => {
             <div className="row">
                 <h2 className="mb-4 text-center">Add New Sales Agent</h2>
                 <Sidebar />
-                <div className="col-md-10 py-3 d-flex justify-content-center">
-                    <div className="col-md-8">
-                        <form onSubmit={handleSubmit} className="card mx-md-5 col-md-8 mx-auto px-4 py-5 shadow-sm rounded-sm">
+                <div className="col-md-8 py-3 d-flex justify-content-center">
+                    <div className="col col-md-8">
+                        <form onSubmit={handleSubmit} className="card mx-md-5 px-4 py-5 shadow-sm rounded-sm">
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Agent Name</label>
                                 <input type="text" value={formData.name} onChange={handleChange} className="form-control" id="name" name="name" placeholder="John Doe" />
                             </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input type="email" value={formData.email} onChange={handleChange} class="form-control" id="email" name="email" placeholder="name@example.com" />
+                            <div className="mb-3">
+                                <label htmlFor="email" className="form-label">Email address</label>
+                                <input type="email" value={formData.email} onChange={handleChange} className="form-control" id="email" name="email" placeholder="name@example.com" />
                             </div>
                             <button className="btn btn-primary" disabled={loading}>
                                 {loading && <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>}
