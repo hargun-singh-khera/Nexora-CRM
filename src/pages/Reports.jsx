@@ -15,13 +15,13 @@ const Reports = () => {
   // console.log("leadsClosed", leadsClosed)
 
   const { data: leadsData, loading: leadsLoading, error: leadsError } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
-  console.log("leadsData", leadsData)
+  // console.log("leadsData", leadsData)
   const { data: agentData, loading: agentLoading, error: agentError } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
   // console.log("agentData", agentData)
   // const { data: leadsClosedByAgent, loading: leadsClosedByAgentLoading, error: leadsClosedByAgentError } = useFetch("http://localhost:3000/api/report/leads-closed-by-agent")
   // console.log("leadsClosedByAgent", leadsClosedByAgent)
 
-  const leadsClosedByAgent = agentData?.salesAgent?.map(agent => ({ name: agent.name, leadsClosed: leadsData?.leads?.filter(lead => lead.status === "Closed" && agent._id === lead.salesAgent._id ).length }))
+  // const leadsClosedByAgent = agentData?.salesAgent?.map(agent => ({ name: agent.name, leadsClosed: leadsData?.leads?.filter(lead => lead.status === "Closed" && agent._id === lead.salesAgent._id ).length }))
   // console.log("leadsClosedByAgent", leadsClosedByAgent)
   const totalLeadsInPipeline = data?.totalLeadsInPipeline
   const leadsClosedLastWeek = leadsClosed?.leads
@@ -32,7 +32,7 @@ const Reports = () => {
   const totalQualifiedLeads = leadsData?.leads?.filter(lead => lead.status === "Qualified").length
   const totalClosedLeads = leadsData?.leads?.filter(lead => lead.status === "Closed").length
 
-  console.log("totalNewLeads", totalNewLeads, ", totalQualifiedLeads", totalQualifiedLeads, "totalContactedLeads", totalContactedLeads, "totalProposalSentLeads", totalProposalSentLeads, "totalClosedLeads", totalClosedLeads)
+  // console.log("totalNewLeads", totalNewLeads, ", totalQualifiedLeads", totalQualifiedLeads, "totalContactedLeads", totalContactedLeads, "totalProposalSentLeads", totalProposalSentLeads, "totalClosedLeads", totalClosedLeads)
 
   const leadsClosedAndPipelineData = {
     labels: ['Leads closed', 'Leads in pipeline'],
@@ -98,7 +98,7 @@ const Reports = () => {
     datasets: [
       {
         label: 'Closed Leads',
-        data: agentData?.salesAgent?.map(agent => leadsData?.leads?.filter(lead => lead.status === "Closed" && agent._id === lead.salesAgent._id ).length),
+        data: agentData?.salesAgent?.map(agent => leadsData?.leads?.filter(lead => lead.status === "Closed" && agent._id === lead.salesAgent?._id).length),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
@@ -111,12 +111,12 @@ const Reports = () => {
         <Sidebar />
         <div className="col-md-4 text-center">
           <h4 className="my-5">Total Leads closed and in Pipeline</h4>
-          {(leadPipelineLoading || leadsClosedLoading) && <div className="d-flex py-4 justify-content-center">
+          {(leadPipelineLoading || leadsLoading) && <div className="d-flex py-4 justify-content-center">
             <div className="spinner-border text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>}
-          {!leadPipelineLoading && !leadsClosedLoading && <Pie data={leadsClosedAndPipelineData} />}
+          {!leadPipelineLoading && !leadsLoading && <Pie data={leadsClosedAndPipelineData} />}
         </div>
         <div className="col-md-4  text-center">
           <h4 className="my-5">Lead Status Distribution</h4>

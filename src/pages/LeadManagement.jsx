@@ -198,7 +198,7 @@ const LeadManagement = () => {
                   </tr>
                   <tr>
                     <th scope="row">Sales Agent</th>
-                    {!isEdit ? (<td>{leads?.salesAgent?.name}</td>) : (
+                    {!isEdit ? (<td>{leads?.salesAgent === null ? "NA" : leads?.salesAgent?.name}</td>) : (
                       <td>
                         <Select options={salesAgentOptions} onChange={handleSelectChange} name="salesAgent" defaultValue={salesAgentOptions?.find(option => option.value === leads?.salesAgent?._id)} />
                       </td>
@@ -255,7 +255,7 @@ const LeadManagement = () => {
               <div key={comment._id} className="card p-2 rounded mb-3">
                 <div className="card-body">
                   <div className="d-flex justify-content-between">
-                    <h5>{comment?.author?.name}</h5>
+                    <h5>{comment?.author === null ? "NA" : comment?.author?.name}</h5>
                     <p>{new Date(comment?.updatedAt).toLocaleString()}</p>
                   </div>
                   <p>{comment?.commentText}</p>

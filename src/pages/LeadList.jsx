@@ -11,7 +11,7 @@ const LeadList = () => {
     // console.log("data", data)
 
     const { data: salesAgentData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
-    console.log("salesAgentData", salesAgentData)
+    // console.log("salesAgentData", salesAgentData)
 
 
     const statusOptions = [
@@ -97,7 +97,7 @@ const LeadList = () => {
                                     <th scope="row">{index + 1}</th>
                                     <td>{lead.name}</td>
                                     <td>{lead.status}</td>
-                                    <td>{lead.salesAgent.name}</td>
+                                    <td>{lead.salesAgent === null ? "NA" : lead.salesAgent?.name}</td>
                                     <td>
                                         <Link to={`/lead/list/${lead._id}`} className="btn btn-primary btn-sm">View</Link>
                                     </td>

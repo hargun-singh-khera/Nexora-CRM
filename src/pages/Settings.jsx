@@ -5,9 +5,9 @@ import toast, { Toaster } from 'react-hot-toast'
 
 const Settings = () => {
     const { data: leadsData, loading: leadsLoading, error: leadsError } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/leads")
-    console.log("leadsData", leadsData)
+    // console.log("leadsData", leadsData)
     const { data: agentsData, loading: agentsLoading, error: agentsError } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
-    console.log("agentsData", agentsData)
+    // console.log("agentsData", agentsData)
 
 
     const [leads, setLeads] = useState([])
@@ -19,8 +19,8 @@ const Settings = () => {
     }, [leadsData, agentsData])
 
 
-    console.log("leads", leads)
-    console.log("agents", agents)
+    // console.log("leads", leads)
+    // console.log("agents", agents)
 
     const handleDeleteLead = async (leadId) => {
         try {
