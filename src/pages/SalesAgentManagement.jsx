@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const SalesAgentManagement = () => {
     const { data, loading, error } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
-    console.log("data", data)
+    // console.log("data", data)
     return (
         <div className="container-fluid  py-4">
             <div className="row">

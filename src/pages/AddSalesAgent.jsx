@@ -29,12 +29,12 @@ const AddSalesAgent = () => {
                 },
                 body: JSON.stringify(formData)
             })
-            console.log("response", response)
+            // console.log("response", response)
             if (!response.ok) {
                 throw new Error("Failed to add sales agent.")
             }
             const data = await response.json()
-            console.log("data", data)
+            // console.log("data", data)
             setFormData({
                 name: "",
                 email: "",
