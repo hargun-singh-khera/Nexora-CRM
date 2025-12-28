@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <div className="container-fluid pt-3">
       <div className="row">
-        <h2 className="text-center mb-4">Anvaya CRM Dashboard</h2>
+        <h2 className="text-center mb-4">Nexora CRM Dashboard</h2>
         <div className="col-md-2">
           <div className="list-group">
             <Link to={"/"} className="list-group-item" aria-current="true">Dashboard</Link>
