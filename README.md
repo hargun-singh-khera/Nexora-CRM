@@ -1,11 +1,11 @@
-# Anvaya CRM
+# Nexora CRM
 
-Anvaya CRM is a full-stack Customer Relationship Management application that enables sales teams to capture, manage, track, and convert leads efficiently through a centralized dashboard-driven workflow.
+Nexora CRM is a full-stack Customer Relationship Management application that enables sales teams to capture, manage, track, and convert leads efficiently through a centralized dashboard-driven workflow.
 
 ---
 
 ## Demo Link
-[Live Demo](https://anvaya-crm.vercel.app/)
+[Live Demo](https://nexora-crm-mu.vercel.app/)
 
 ---
 
@@ -13,7 +13,7 @@ Anvaya CRM is a full-stack Customer Relationship Management application that ena
 
 ```
 # Clone the repository
-git clone https://github.com/hargun-singh-khera/Anvaya-CRM.git
+git clone https://github.com/hargun-singh-khera/Nexora-CRM.git
 # Install dependencies
 npm install
 # Start the development server
@@ -36,11 +36,11 @@ npm run dev
 
 ---
 
-## Demo Video
+<!-- ## Demo Video
 Watch a walkthrough (5–7 minutes) of all major features of this app:
 [Video Link]()
 
----
+--- -->
 
 ## Features
 
