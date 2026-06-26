@@ -19,7 +19,7 @@ const Dashboard = () => {
           <div className="list-group">
             <Link to={"/"} className="list-group-item" aria-current="true">Dashboard</Link>
             <Link to={"/leads"} className="list-group-item">Leads</Link>
-            <Link to={"/"} className="list-group-item">Sales</Link>
+            <Link to={"/sales-agent/view"} className="list-group-item">Sales</Link>
             <Link to={"/sales-agent"} className="list-group-item">Agents</Link>
             <Link to={"/lead/reports"} className="list-group-item">Reports</Link>
             <Link to={"/settings"} className="list-group-item">Settings</Link>

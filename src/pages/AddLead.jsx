@@ -4,10 +4,12 @@ import makeAnimated from 'react-select/animated'
 import useFetch from '../useFetch'
 import toast, { Toaster } from 'react-hot-toast';
 import Sidebar from '../components/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 const animatedComponents = makeAnimated()
 
 const AddLead = () => {
+  const navigate = useNavigate();
   const { data: agentData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/agents")
   const { data: tagsData } = useFetch("https://neo-g-backend-9d5c.vercel.app/api/tags")
 
@@ -70,19 +72,24 @@ const AddLead = () => {
 
   
   const handleSubmit = async (e) => {
-    console.log("submitting")
     e.preventDefault()
+    const { name, source, salesAgent, status, tags, timeToClose, priority } = formData;
+    if (!name || !source || !salesAgent || !priority) {
+      toast.error("All fields are required")
+      return
+    }
     try {
       setLoading(true)
       const payload = {
-        name: formData.name,
-        source: formData.source.value,
-        salesAgent: formData.salesAgent.value,
-        status: formData.status.value,
-        tags: formData.tags.map(tag => tag.value),
-        timeToClose: 1,
-        priority: formData.priority.value,
+        name,
+        source: source.value,
+        salesAgent: salesAgent.value,
+        status: status.value,
+        tags: tags.map(tag => tag.value),
+        timeToClose: Number(timeToClose),
+        priority: priority.value,
       }
+     
       const response = await fetch("https:///neo-g-backend-9d5c.vercel.app/api/leads", {
         method: "POST",
         headers: {
@@ -93,8 +100,10 @@ const AddLead = () => {
       if (!response.ok) {
         throw new Error("Failed to add lead.")
       }
-      console.log(formData)
       toast.success("Lead added successfully")
+      setTimeout(() => {
+        navigate("/")
+      }, 500)
       setFormData({
         name: "",
         source: null,

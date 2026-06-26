@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import Sidebar from '../components/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 const AddSalesAgent = () => {
-
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -35,6 +36,9 @@ const AddSalesAgent = () => {
             }
             const data = await response.json()
             // console.log("data", data)
+            setTimeout(() => {
+                navigate("/sales-agent")
+            }, 500)
             setFormData({
                 name: "",
                 email: "",

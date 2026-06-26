@@ -18,13 +18,9 @@ import Reports from './pages/Reports.jsx'
 import Settings from './pages/Settings.jsx'
 
 const router = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   element: <App />
-  // },
   {
     path: "/",
-    element: <Dashboard />
+    element: <App />
   },
   {
     path: "/lead",
